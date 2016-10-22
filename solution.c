@@ -2,8 +2,16 @@
 #include <stdio.h>
 #include <string.h>
 
-// Struct for tree of characters.  Can't limit next chars to A-Z/a-z since hyphens are possible.
-// Not worried about using memory carelessly, so just have it be a 128-ary tree.
+/* 
+ * The node structure makes an n-ary tree with each node having a 'count'
+ * variable.  This tree is used to keep track of which headers have been
+ * observed and how many times each word has been observed.  Space is
+ * wasted by using 128 pointers per node, corresponding to the char
+ * values 0-127.  In principle, only a-z, A-Z, and '-' are used in the
+ * testing set, so the memory usage could be reduced to 26+26+1=53
+ * (or 26+1 if case sensitivity were dropped).  However, this would
+ * require a character->mapping index that would slightly slow the program.
+ */
 const int numChars = 128;
 struct node {
   int count;
