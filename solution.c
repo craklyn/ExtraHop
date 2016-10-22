@@ -64,15 +64,11 @@ struct node *readFile(FILE *ptr_file) {
   struct node* root = createNode();
 
   while (fgets(buf,1000, ptr_file)!=NULL) {
-    printf("New line read.  ");
-
     // Find the position of the first colon in the string
     char *colon = strchr(buf, ':');
 
     // Terminate the string at the location of the first colon
     buf[colon-buf] = '\0';
-
-    printf("Adding word to tree: %s\n", buf);
 
     addWordToTree(root, buf);
   }
@@ -125,7 +121,7 @@ struct node *createNode() {
 
 void printResults(struct node* root, int nHeaders, char *headers[]) {
   for(int i = 0; i < nHeaders; i++) {
-    printf("%s was seen %d times.\n", headers[i], getWordcountFromTree(root, headers[i]));
+    printf("'%s' seen %d times.\n", headers[i], getWordcountFromTree(root, headers[i]));
   }
 }
 
