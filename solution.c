@@ -16,6 +16,7 @@ struct node *createNode();
 void printResults(struct node*, int, char *headers[]);
 void addWordToTree(struct node* root, char *word);
 int getWordcountFromTree(struct node* root, char *word);
+void freeMemory(struct node*);
 
 int main(int argc, char* argv[]) {
   // Headers-to-track are chosen at compilation-time
@@ -34,6 +35,7 @@ int main(int argc, char* argv[]) {
   printResults(root, numHeaders, headers);
 
   fclose(ptr_file);
+  freeMemory(root);
   return 0;
 }
 
@@ -127,3 +129,12 @@ void printResults(struct node* root, int nHeaders, char *headers[]) {
   }
 }
 
+
+void freeMemory(struct node* theNode) {
+  for(int i = 0; i < numChars; i++) {
+    if(theNode->nextChar[i] != NULL) {
+      freeMemory(theNode->nextChar[i]);
+    }
+  }
+  free(theNode); 
+}
