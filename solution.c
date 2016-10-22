@@ -34,19 +34,30 @@ int main(int argc, char* argv[]) {
   headers[1] = "Accept";
   headers[2] = "Content-Length";
 
+  // Open input file
   FILE *ptr_file = openFile(argc, argv);
   if(!ptr_file)
     return 1;
 
+  // Read input file, build out header tree
   struct node* root = readFile(ptr_file);
 
+  // Print the number of occurences of the headers in the tree.
   printResults(root, numHeaders, headers);
 
+  // Close file
   fclose(ptr_file);
+
+  // Free memory from tree
   freeMemory(root);
+
+  // Success
   return 0;
 }
 
+/*
+ * openFile opens the file supplied at run-time and returns the file's pointer.
+ */
 FILE *openFile(int argc, char* argv[]) {
   const char *fileInput = argv[1];
 
