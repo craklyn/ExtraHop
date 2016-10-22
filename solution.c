@@ -28,11 +28,12 @@ void freeMemory(struct node*);
 
 int main(int argc, char* argv[]) {
   // Headers-to-track are chosen at compilation-time
-  int numHeaders = 3;
+  int numHeaders = 4;
   char *headers[numHeaders];
   headers[0] = "Connection";
   headers[1] = "Accept";
   headers[2] = "Content-Length";
+  headers[3] = "CableModems";
 
   // Open input file
   FILE *ptr_file = openFile(argc, argv);
