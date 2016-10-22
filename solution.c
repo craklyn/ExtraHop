@@ -3,8 +3,8 @@
 #include <string.h>
 
 // Struct for tree of characters.  Can't limit next chars to A-Z/a-z since hyphens are possible.
-// Not worried about using memory carelessly, so just have it be a 256-ary tree.
-const int numChars = 256;
+// Not worried about using memory carelessly, so just have it be a 128-ary tree.
+const int numChars = 128;
 struct node {
   int count;
   struct node *nextChar[numChars];
@@ -14,6 +14,7 @@ FILE *openFile(int, char*[]);
 struct node *readFile(FILE *);
 struct node *createNode();
 void printResults();
+void addWordToTree(struct node* root, char *buf);
 
 int main(int argc, char* argv[]) {
   // Headers-to-track are chosen at compilation-time
@@ -64,11 +65,25 @@ struct node *readFile(FILE *ptr_file) {
     // Terminate the string at the location of the first colon
     buf[colon-buf] = '\0';
 
+    addWordToTree(root, buf);
   }
 
   return NULL;
 }
 
+void addWordToTree(struct node* root, char *buf) {
+  struct node* curNode = root;
+  int pos = 0;
+
+  while(buf[pos] != '\0') {
+    if(curNode->nextChar[buf[pos]] == NULL)
+      curNode->nextChar[buf[pos]] = createNode();
+
+    pos += 1;
+  }
+  
+  curNode->count += 1;
+}
 
 struct node *createNode() {
   struct node* theNode = (struct node*) malloc(sizeof(struct node));
