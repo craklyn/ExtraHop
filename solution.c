@@ -2,16 +2,18 @@
 #include<stdio.h>
 #include <string.h>
 
-// Struct for doubly-linked list of strings
+// Struct for tree of characters.  Can't limit next chars to A-Z/a-z since hyphens are possible.
+// Not worried about using memory carelessly, so just have it be a 256-ary tree.
+const int numChars = 256;
 struct node {
   int count;
-  char next['z'-'A'+1];
+  struct node *nextChar[numChars];
 };
 
 FILE *openFile(int, char*[]);
 struct node *readFile(FILE *);
+struct node *createNode();
 void printResults();
-void addWordToTree(char*);
 
 int main(int argc, char* argv[]) {
   // Headers-to-track are chosen at compilation-time
@@ -25,7 +27,7 @@ int main(int argc, char* argv[]) {
   if(!ptr_file)
     return 1;
 
-  struct node* root = (struct node*) malloc(sizeof(struct node));
+  struct node* root = readFile(ptr_file);
 
   fclose(ptr_file);
   return 0;
@@ -53,6 +55,8 @@ FILE *openFile(int argc, char* argv[]) {
 struct node *readFile(FILE *ptr_file) {
   char buf[1000]; // Artibrary length; assumed longer than any header line
 
+  struct node* root = createNode();
+
   while (fgets(buf,1000, ptr_file)!=NULL) {
     // Find the position of the first colon in the string
     char *colon = strchr(buf, ':');
@@ -60,14 +64,22 @@ struct node *readFile(FILE *ptr_file) {
     // Terminate the string at the location of the first colon
     buf[colon-buf] = '\0';
 
-    addWordToTree(buf);
   }
 
   return NULL;
 }
 
-void addWordToTree(char *buf) {
 
+struct node *createNode() {
+  struct node* theNode = (struct node*) malloc(sizeof(struct node));
+
+  // initialize values
+  theNode->count = 0;
+  for(int i = 0; i < numChars; i++) {
+    theNode->nextChar[i] = NULL;
+  }
+
+  return theNode;
 }
 
 void printResults() {
