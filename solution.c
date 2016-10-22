@@ -33,7 +33,7 @@ int main(int argc, char* argv[]) {
   headers[0] = "Connection";
   headers[1] = "Accept";
   headers[2] = "Content-Length";
-  headers[3] = "CableModems";
+  headers[3] = "CableModems-testCase";
 
   // Open input file
   FILE *ptr_file = openFile(argc, argv);
