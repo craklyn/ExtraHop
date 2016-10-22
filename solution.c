@@ -65,7 +65,10 @@ FILE *openFile(int argc, char* argv[]) {
   return ptr_file;
 }
 
-
+/* 
+ * The readFile function Reads the input text file, line by line, and builds
+ * up the tree of word-count.
+ */
 struct node *readFile(FILE *ptr_file) {
   char buf[1000]; // Artibrary length; assumed longer than any header line
 
@@ -84,6 +87,12 @@ struct node *readFile(FILE *ptr_file) {
   return root;
 }
 
+/*
+ * The addWordToTree function will find the location on the tree corresponding
+ * to the passed word and incriment the count by 1.  If the tree doesn't
+ * have branches corresponding to the letters of the word, the tree is built
+ * out by this function.
+ */
 void addWordToTree(struct node* root, char *word) {
   struct node* curNode = root;
   int pos = 0;
@@ -99,6 +108,12 @@ void addWordToTree(struct node* root, char *word) {
   curNode->count += 1;
 }
 
+/*
+ * The getWordcountFromTree function finds the tree's leaf corresponding to
+ * the word that was passed and returns the count at that node.  If the tree
+ * isn't built out to that leaf, it is due to that word not being observed in
+ * a header file, so the count (i.e. 0) is returned.
+ */
 int getWordcountFromTree(struct node* root, char *word) {
   struct node* curNode = root;
   int pos = 0;
@@ -114,6 +129,9 @@ int getWordcountFromTree(struct node* root, char *word) {
   return curNode->count;
 }
 
+/* 
+ * The createNode function allocates memory and initializes a node struct.
+ */ 
 struct node *createNode() {
   struct node* theNode = (struct node*) malloc(sizeof(struct node));
 
@@ -126,14 +144,20 @@ struct node *createNode() {
   return theNode;
 }
 
-
+/* 
+ * The printResults function prints the number of occurences of watched
+ * headers to stdout.
+ */ 
 void printResults(struct node* root, int nHeaders, char *headers[]) {
   for(int i = 0; i < nHeaders; i++) {
     printf("'%s' seen %d times.\n", headers[i], getWordcountFromTree(root, headers[i]));
   }
 }
 
-
+/*
+ * The freeMemory function recursively, by depth first, frees memory of the
+ * tree.
+ */
 void freeMemory(struct node* theNode) {
   for(int i = 0; i < numChars; i++) {
     if(theNode->nextChar[i] != NULL) {
