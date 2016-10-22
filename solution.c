@@ -1,5 +1,5 @@
-#include<stdlib.h>
-#include<stdio.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 
 // Struct for tree of characters.  Can't limit next chars to A-Z/a-z since hyphens are possible.
@@ -13,22 +13,29 @@ struct node {
 FILE *openFile(int, char*[]);
 struct node *readFile(FILE *);
 struct node *createNode();
-void printResults();
-void addWordToTree(struct node* root, char *buf);
+void printResults(struct node*, int, char *headers[]);
+void addWordToTree(struct node* root, char *word);
+int getWordcountFromTree(struct node* root, char *word);
 
 int main(int argc, char* argv[]) {
   // Headers-to-track are chosen at compilation-time
-  const int numHeaders = 3;
-  const char *headers[numHeaders];
+  int numHeaders = 3;
+  char *headers[numHeaders];
   headers[0] = "Connection";
   headers[1] = "Accept";
   headers[2] = "Content-Length";
 
+  printf("Debug %d\n", __LINE__);
   FILE *ptr_file = openFile(argc, argv);
   if(!ptr_file)
     return 1;
 
+  printf("Debug %d\n", __LINE__);
   struct node* root = readFile(ptr_file);
+  printf("Debug %d\n", __LINE__);
+
+  printResults(root, numHeaders, headers);
+  printf("Debug %d\n", __LINE__);
 
   fclose(ptr_file);
   return 0;
@@ -85,6 +92,20 @@ void addWordToTree(struct node* root, char *buf) {
   curNode->count += 1;
 }
 
+int getWordcountFromTree(struct node* root, char *word) {
+  struct node* curNode = root;
+  int pos = 0;
+
+  while(word[pos] != '\0') {
+    if(curNode->nextChar[word[pos]] == NULL)
+      return 0;
+
+    pos += 1;
+  }
+
+  return curNode->count;
+}
+
 struct node *createNode() {
   struct node* theNode = (struct node*) malloc(sizeof(struct node));
 
@@ -97,7 +118,10 @@ struct node *createNode() {
   return theNode;
 }
 
-void printResults() {
 
+void printResults(struct node* root, int nHeaders, char *headers[]) {
+  for(int i = 0; i < nHeaders; i++) {
+    printf("%s was seen %d times.\n", headers[i], getWordcountFromTree(root, headers[i]));
+  }
 }
 
