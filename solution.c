@@ -121,6 +121,7 @@ struct node *createNode() {
 
 void printResults(struct node* root, int nHeaders, char *headers[]) {
   for(int i = 0; i < nHeaders; i++) {
+    printf("header: %s\n", headers[i]);
     printf("%s was seen %d times.\n", headers[i], getWordcountFromTree(root, headers[i]));
   }
 }
