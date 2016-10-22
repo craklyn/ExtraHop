@@ -66,11 +66,15 @@ struct node *readFile(FILE *ptr_file) {
   struct node* root = createNode();
 
   while (fgets(buf,1000, ptr_file)!=NULL) {
+    printf("New line read.  ");
+
     // Find the position of the first colon in the string
     char *colon = strchr(buf, ':');
 
     // Terminate the string at the location of the first colon
     buf[colon-buf] = '\0';
+
+    printf("Adding word to tree: %s\n", buf);
 
     addWordToTree(root, buf);
   }
@@ -95,18 +99,38 @@ void addWordToTree(struct node* root, char *buf) {
 int getWordcountFromTree(struct node* root, char *word) {
   struct node* curNode = root;
   int pos = 0;
+  printf("word: %s\n", word);
 
+  printf("Debug %d\n", __LINE__);
   while(word[pos] != '\0') {
+    printf("Debug %d\n", __LINE__);
+    printf("pos: %d\n", pos);
+    printf("word[pos]: %d\n", word[pos]);
+    printf("Debug %d\n", __LINE__);
+    curNode;
+    printf("Debug %d\n", __LINE__);
+    pos;
+    printf("Debug %d\n", __LINE__);
+    word[pos];
+    printf("Debug %d\n", __LINE__);
+    curNode->nextChar;
+    printf("Debug %d\n", __LINE__);
+    curNode->nextChar[word[pos]];;
+    
+    printf("curNode->nextChar[word[pos]]: %d\n", curNode->nextChar[word[pos]]->count);
     if(curNode->nextChar[word[pos]] == NULL)
       return 0;
 
+    printf("Debug %d\n", __LINE__);
     pos += 1;
   }
 
+  printf("Debug %d\n", __LINE__);
   return curNode->count;
 }
 
 struct node *createNode() {
+  printf("Creating new node\n");
   struct node* theNode = (struct node*) malloc(sizeof(struct node));
 
   // initialize values
@@ -121,8 +145,11 @@ struct node *createNode() {
 
 void printResults(struct node* root, int nHeaders, char *headers[]) {
   for(int i = 0; i < nHeaders; i++) {
+    printf("Debug %d\n", __LINE__);
     printf("header: %s\n", headers[i]);
+    printf("Debug %d\n", __LINE__);
     printf("%s was seen %d times.\n", headers[i], getWordcountFromTree(root, headers[i]));
+    printf("Debug %d\n", __LINE__);
   }
 }
 
