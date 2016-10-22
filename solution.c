@@ -26,7 +26,20 @@ int main(int argc, char* argv[]) {
     return 1;
 
   struct node* headersList = (struct node*) malloc(sizeof(struct node)); 
+  headersList->word = NULL;
+  headersList->prev = NULL;
+  headersList->next = NULL;
   headersList = readFile(ptr_file);
+
+  while(headersList->next != NULL) {
+    printf("head: %s\n", headersList->word);
+    headersList = headersList->next;
+  }
+
+  while(headersList->prev != NULL) {
+    printf("backwards: %s\n", headersList->word);
+    headersList = headersList->prev;
+  }
 
   fclose(ptr_file);
   return 0;
@@ -54,15 +67,33 @@ FILE *openFile(int argc, char* argv[]) {
 struct node *readFile(FILE *ptr_file) {
   char buf[1000];  // A long string, with length chosen arbitrarily.
 
-  while (fgets(buf,1000, ptr_file)!=NULL) {
-    char *colon = strchr(buf, ':');
-    printf("%ld - ", (colon-buf));
+  struct node *prevNode = (struct node*)malloc(sizeof(struct node));
+  struct node *topNode = prevNode;
 
-    printf("%s",buf);
+  while (fgets(buf,1000, ptr_file)!=NULL) {
+    // Find the position of the first colon in the string
+    char *colon = strchr(buf, ':');
+
+    // Terminate the string at the location of the first colon
+    buf[colon-buf] = '\0';
+
+    // Allocate memory for the string and copy string into the space
+    char *tmpStr = (char*)malloc(sizeof(char) * (colon-buf+1));
+    strcpy(tmpStr, buf);
+   
+    // Allocate memory for the node and attach pointers
+    struct node* newNode = (struct node*)malloc(sizeof(struct node));
+    prevNode->next = newNode;
+    newNode->word = tmpStr;
+    newNode->prev = prevNode;
+    newNode->next = NULL;
+
+    prevNode = newNode;
   }
 
-//  quicksortX();
-  return NULL;
+  // topNode exists prior to the first node containing data.  So return the topNode's next.
+  struct node *head = topNode->next;
+  return head;
 }
 
 
@@ -71,6 +102,7 @@ void printResults() {
 }
 
 /*
+// Code based on class notes from https://www.cs.princeton.edu/~rs/AlgsDS07/18RadixSort.pdf
 private static void quicksortX(char *a[], int lo, int hi, int d) {
   if (hi - lo <= 0) return;
   int i = lo-1, j = hi;
