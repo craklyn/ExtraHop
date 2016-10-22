@@ -25,17 +25,13 @@ int main(int argc, char* argv[]) {
   headers[1] = "Accept";
   headers[2] = "Content-Length";
 
-  printf("Debug %d\n", __LINE__);
   FILE *ptr_file = openFile(argc, argv);
   if(!ptr_file)
     return 1;
 
-  printf("Debug %d\n", __LINE__);
   struct node* root = readFile(ptr_file);
-  printf("Debug %d\n", __LINE__);
 
   printResults(root, numHeaders, headers);
-  printf("Debug %d\n", __LINE__);
 
   fclose(ptr_file);
   return 0;
@@ -79,17 +75,18 @@ struct node *readFile(FILE *ptr_file) {
     addWordToTree(root, buf);
   }
 
-  return NULL;
+  return root;
 }
 
-void addWordToTree(struct node* root, char *buf) {
+void addWordToTree(struct node* root, char *word) {
   struct node* curNode = root;
   int pos = 0;
 
-  while(buf[pos] != '\0') {
-    if(curNode->nextChar[buf[pos]] == NULL)
-      curNode->nextChar[buf[pos]] = createNode();
+  while(word[pos] != '\0') {
+    if(curNode->nextChar[word[pos]] == NULL)
+      curNode->nextChar[word[pos]] = createNode();
 
+    curNode = curNode->nextChar[word[pos]];
     pos += 1;
   }
   
@@ -99,38 +96,19 @@ void addWordToTree(struct node* root, char *buf) {
 int getWordcountFromTree(struct node* root, char *word) {
   struct node* curNode = root;
   int pos = 0;
-  printf("word: %s\n", word);
 
-  printf("Debug %d\n", __LINE__);
   while(word[pos] != '\0') {
-    printf("Debug %d\n", __LINE__);
-    printf("pos: %d\n", pos);
-    printf("word[pos]: %d\n", word[pos]);
-    printf("Debug %d\n", __LINE__);
-    curNode;
-    printf("Debug %d\n", __LINE__);
-    pos;
-    printf("Debug %d\n", __LINE__);
-    word[pos];
-    printf("Debug %d\n", __LINE__);
-    curNode->nextChar;
-    printf("Debug %d\n", __LINE__);
-    curNode->nextChar[word[pos]];;
-    
-    printf("curNode->nextChar[word[pos]]: %d\n", curNode->nextChar[word[pos]]->count);
     if(curNode->nextChar[word[pos]] == NULL)
       return 0;
 
-    printf("Debug %d\n", __LINE__);
+    curNode = curNode->nextChar[word[pos]];
     pos += 1;
   }
 
-  printf("Debug %d\n", __LINE__);
   return curNode->count;
 }
 
 struct node *createNode() {
-  printf("Creating new node\n");
   struct node* theNode = (struct node*) malloc(sizeof(struct node));
 
   // initialize values
@@ -145,11 +123,7 @@ struct node *createNode() {
 
 void printResults(struct node* root, int nHeaders, char *headers[]) {
   for(int i = 0; i < nHeaders; i++) {
-    printf("Debug %d\n", __LINE__);
-    printf("header: %s\n", headers[i]);
-    printf("Debug %d\n", __LINE__);
     printf("%s was seen %d times.\n", headers[i], getWordcountFromTree(root, headers[i]));
-    printf("Debug %d\n", __LINE__);
   }
 }
 

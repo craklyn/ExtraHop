@@ -1,6 +1,4 @@
-gcc -o solution solution.c
-echo ""
-./solution
-echo ""
+gcc -g -o solution solution.c
+#gcc -o solution solution.c
 ./solution testFile.txt
 
