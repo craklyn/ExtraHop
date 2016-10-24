@@ -12,7 +12,7 @@
  * Initially, there is a root node.  The initial node has pointers to future
  * branches, but no memory is allocated for the branches yet.
  * 
- *      (root)
+ *      <root>
  *    /  |  |  \ 
  *   (A)(B)(..)(Z)    <-The parenthesis means there is a pointer that can
  *                     point to a node, but is currently pointing to NULL.
@@ -21,7 +21,7 @@
  * corresponding to the character "A", would be initialized in memory and a 
  * value of 1 would be assigned to the character.
  * 
- *      (root)
+ *     <root>
  *    / |  |  \
  *   A (B)(..)(Z)  <- Words beginning in B through Z have not been seen yet.
  *   V
@@ -30,7 +30,7 @@
  * Next, suppose the next two header strings were "ABBA".  That would fill
  * the tree much deeper, and it would look like the following:  
  *
- *           root
+ *          <root>
  *         / |  |  \
  *        A (B)(..)(Z)
  *        V
