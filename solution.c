@@ -34,15 +34,15 @@
  *         / |  |  \
  *        A (B)(..)(Z)
  *        V
- *     /--1--\  <- "A" observed once.
- *    / |  |  \
- *  (A) B (..)(Z) <- "AB" observed zero times; node value is zero.
- *    / | \
- *   (A)B (..) <- "ABB" observed zero times; node value is zero. 
- *     / \
- *    A (..)
- *    V
- *    2 <- "ABBA" observed twice.
+ *      /-1-\  <- "A" observed once.
+ *     / |   \
+ *   (A) B (..) <- "AB" observed zero times; node value is zero.
+ *      /|\ 
+ *   (A) B (..) <- "ABB" observed zero times; node value is zero. 
+ *      / \
+ *     A (..)
+ *     V
+ *     2 <- "ABBA" observed twice.
  *
  * This procedure is repeated until the entire input file is read.  Completing
  * this operation requires each input string to be read once before its
