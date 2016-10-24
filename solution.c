@@ -97,12 +97,13 @@ void freeMemory(struct node*);
 
 int main(int argc, char* argv[]) {
   // Headers-to-track are chosen at compilation-time
-  int numHeaders = 4;
+  int numHeaders = 5;
   char *headers[numHeaders];
   headers[0] = "Connection";
   headers[1] = "Accept";
   headers[2] = "Content-Length";
   headers[3] = "CableModems-testCase";
+  headers[4] = "Content";
 
   // Open input file
   FILE *ptr_file = openFile(argc, argv);
@@ -152,7 +153,6 @@ FILE *openFile(int argc, char* argv[]) {
  */
 struct node *readFile(FILE *ptr_file) {
   char buf[1000]; // Artibrary length; assumed longer than any header line
-
   struct node* root = createNode();
 
   while (fgets(buf,1000, ptr_file)!=NULL) {
@@ -195,7 +195,8 @@ void addWordToTree(struct node* root, char *word) {
  */ 
 void printResults(struct node* root, int nHeaders, char *headers[]) {
   for(int i = 0; i < nHeaders; i++) {
-    printf("'%s' seen %d times.\n", headers[i], getWordcountFromTree(root, headers[i]));
+    printf("'%s' seen %d times.\n", headers[i], 
+           getWordcountFromTree(root, headers[i]));
   }
 }
 
@@ -236,8 +237,8 @@ struct node *createNode() {
 }
 
 /*
- * The freeMemory function recursively, by depth first, frees memory of the
- * tree.
+ * The freeMemory function recursively, by depth first, frees memory from 
+ * the tree.
  */
 void freeMemory(struct node* theNode) {
   for(int i = 0; i < numChars; i++) {
