@@ -62,8 +62,9 @@
  * inefficient.  Each node has one leaf pointer for each possible child,
  * even though typically most of those pointers do not point to any 
  * memory in use.  The usage of memory could be improved by using a dynamic
- * array that could grow in size as the leafs are filled.  But I do not think
- * it is possible to use dynamic arrays without reducing CPU performance.
+ * array that could grow in size as the leaves are filled.  However, I do not 
+ * think it is possible to effectively use dynamic arrays without reducing CPU 
+ * performance.
  */
 
 #include <stdlib.h>
