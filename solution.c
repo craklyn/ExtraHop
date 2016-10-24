@@ -36,9 +36,9 @@
  *        V
  *      /-1-\  <- "A" observed once.
  *     / |   \
- *   (A) B (..) <- "AB" observed zero times; node value is zero.
+ *   (A) B (..) <- "AB" observed zero times; the node value, zero, isn't shown.
  *      /|\ 
- *   (A) B (..) <- "ABB" observed zero times; node value is zero. 
+ *   (A) B (..) <- "ABB" observed zero times; the node value, zero, isn't shown.
  *      / \
  *     A (..)
  *     V
